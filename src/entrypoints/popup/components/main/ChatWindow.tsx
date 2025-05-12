@@ -1,17 +1,34 @@
-
+import { useState } from '#imports';
 import './main.css'
 
-export const ChatWindow = () => {
+interface ChatWindowProps {
+  messages: { id: string; content: string; }[]
+}
+
+export const ChatWindow = (props: ChatWindowProps) => {
+  const [messages, setMessages] = useState(props.messages);
+
+  const handleSend = (message: string) => {
+    setMessages([...messages, { id: `Q-${messages.length + 1}`, content: message }]);
+  };
+  const handleReceive = (message: string) => {
+    setMessages([...messages, { id: `R-${messages.length + 1}`, content: message }]);
+  };
+
   return (
-    <div className="chat-window" style={{ backgroundColor: 'pink', height: '100%', overflowY: 'auto' }}>
-      <div className="chat-message">
-        <div className="message-content">Hello, how can I help you today?</div>
-      </div>
-      <div className="chat-message">
-        <div className="message-content">I have a question about my order.</div>
-      </div>
-      <div className="chat-message">
-        <div className="message-content">Sure, what would you like to know?</div>
+    <div className="chat-window" >
+      <div className="chat-messages">
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className="chat-message"
+            id={message.id}
+          >
+            <div className="message-content">
+              {message.content}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

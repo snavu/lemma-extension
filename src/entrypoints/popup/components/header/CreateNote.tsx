@@ -7,7 +7,7 @@ export const CreateNote = () => {
     console.log('Create Note button clicked');
   };
   return (
-    <button className="create-note-button" style={{ backgroundColor: 'blue', color: 'white', padding: '10px', borderRadius: '5px' }}>
+    <button className="create-note-button" >
       Create Note
     </button>
   );
