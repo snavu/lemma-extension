@@ -6,7 +6,7 @@ export default defineBackground(() => {
     console.log('Received message from content script:', message);
     console.log('webContent:', message.webContent);
     console.log('webAttributes:', message.webAttributes);
-    
+
     // check if the message is from the content script
     // Option 1: ask qution with context of current page -- Perameter: webContent, question
     // Option 2: save current page as a note in the Lemma application
@@ -20,8 +20,8 @@ export default defineBackground(() => {
     } else if (message.type === 'saveNote') {
       // call saveNoteToLemma function to save the note
       saveNoteToLemma(
-        message.webAttributes.text, 
-        message.title, 
+        message.webAttributes.text,
+        message.title,
         message.webAttributes.url
       ).then((success) => {
         // send the success status back to the content script
@@ -39,6 +39,10 @@ export default defineBackground(() => {
 async function sendQueryToLemma(webContent: string, query: string, prevMessages: string[], url: string) {
   // send a message to the content script to get the text of the current page
   console.log('Sending query to Lemma:', { webContent, query, prevMessages, url });
+
+  //Ollama API call
+
+
   return 'This is a dummy answer from Lemma'; // replace with actual answer
 }
 
@@ -49,23 +53,8 @@ async function sendQueryToLemma(webContent: string, query: string, prevMessages:
 async function saveNoteToLemma(webContent: string, title: string, URL: string) {
   // send a message to the content script to save the note
   console.log('Saving note to Lemma:', { webContent, title, URL });
+
+  // Save the note through the Lemma applicaiton
   return true;
 }
 
-
-
-
-/*
-    if (message.type === 'askQuestion') {
-      // send a message to the content script to ask a question
-      browser.tabs.sendMessage(sender.tab.id, {
-        type: 'askQuestion',
-        question: message.question,
-      });
-    } else if (message.type === 'saveNote') {
-      // send a message to the content script to save a note
-      browser.tabs.sendMessage(sender.tab.id, {
-        type: 'saveNote',
-        note: message.note,
-      });
-    } */
