@@ -1,0 +1,56 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px; /* This adjusts the width of the popup*/
+  height: 500px; /* This adjusts the height of the popup*/
+  background-color: cyan;
+  color: var(--text);
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: black;
+  .logo {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  h1 {
+    font-size: 1.5rem;
+    color: var(--text);
+  }
+  }
+}
+
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  /*
+   * Add styling for the sidebar if needed
+   */
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background);
+  }
+}
