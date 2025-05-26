@@ -40,10 +40,44 @@ async function sendQueryToLemma(webContent: string, query: string, prevMessages:
   // send a message to the content script to get the text of the current page
   console.log('Sending query to Lemma:', { webContent, query, prevMessages, url });
 
-  //Ollama API call
+  try {
+    const res = await fetch('http://localhost:3001/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ webContent, query, prevMessages, url }),
+    });
 
+    // Check if the response is ok
+    if (!res.ok) {
+      console.error('HTTP error:', res.status, res.statusText);
+      if (res.status === 404) {
+        return 'Error: API endpoint not found. Make sure the Lemma server is running with the correct routes.';
+      }
+      return `Error: Server responded with ${res.status} ${res.statusText}`;
+    }
 
-  return 'This is a dummy answer from Lemma'; // replace with actual answer
+    // Check if response has content
+    const responseText = await res.text();
+    if (!responseText) {
+      console.error('Empty response from server');
+      return 'Error: Empty response from server';
+    }
+
+    // Try to parse JSON
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('Failed to parse JSON response:', responseText);
+      return 'Error: Invalid response format from server';
+    }
+
+    console.log('Response from Lemma:', data);
+    return data.answer || 'No answer received from server';
+  } catch (error) {
+    console.error('Error calling Lemma API:', error);
+    return 'Error: Could not connect to Lemma';
+  }
 }
 
 // background script to save the current page as a note in the Lemma application
@@ -54,7 +88,45 @@ async function saveNoteToLemma(webContent: string, title: string, URL: string) {
   // send a message to the content script to save the note
   console.log('Saving note to Lemma:', { webContent, title, URL });
 
-  // Save the note through the Lemma applicaiton
-  return true;
+  try {
+    const res = await fetch('http://localhost:3001/api/save-note', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ webContent, title, url: URL }),
+    });
+
+    // Check if the response is ok
+    if (!res.ok) {
+      console.error('HTTP error:', res.status, res.statusText);
+      if (res.status === 404) {
+        console.error('Error: API endpoint not found. Make sure the Lemma server is running with the correct routes.');
+        return false;
+      }
+      console.error(`Error: Server responded with ${res.status} ${res.statusText}`);
+      return false;
+    }
+
+    // Check if response has content
+    const responseText = await res.text();
+    if (!responseText) {
+      console.error('Empty response from server');
+      return false;
+    }
+
+    // Try to parse JSON
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('Failed to parse JSON response:', responseText);
+      return false;
+    }
+
+    console.log('Response from Lemma save-note:', data);
+    return data.success !== false; // Return true unless explicitly false
+  } catch (error) {
+    console.error('Error calling Lemma save-note API:', error);
+    return false;
+  }
 }
 
