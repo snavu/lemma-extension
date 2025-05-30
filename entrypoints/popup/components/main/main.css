@@ -1,69 +1,111 @@
 .chat-window {
   display: flex;
-  background-color: gray;
+  background-color: var(--background-secondary);
   flex-direction: column;
   width: 100%;
   height: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+}
 
-  /* add styling for the chat-message and message-content */ 
-  .chat-message {
-    display: flex;
-    align-items: center;
-    padding: 10px;
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 100%;
+  padding: 10px;
+}
 
-    .message-content {
-      margin-left: 10px;
-      background-color: white;
-      padding: 5px;
-      border-radius: 4px;
-      color: black;
+.chat-message {
+  padding: 8px 12px;
+  border-radius: 12px;
+  margin: 0px 10px 20px 10px;
+  word-wrap: break-word;
+  display: flex;
+  align-items: center;
+}
 
-      
-    }
-    /* depending on the id of the message, change the position */ 
-    &[id^="Q-"] { /* Q- for the message sent by the user */
-      justify-content: flex-end;
-      .message-content {
-        background-color: lightblue;
-      }
-    }
+.chat-message p {
+  margin: 0;
+}
 
-    &[id^="R-"] { /* R- for the message sent by the AI */
-      justify-content: flex-start;
-      .message-content {
-        background-color: lightgreen;
-      }
-    }
-  }
+.message-content {
+  padding: 8px 12px;
+  border-radius: 12px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: hidden;
+}
+
+/* Q- for the message sent by the user */
+.chat-message[id^="Q-"] {
+  justify-content: flex-end;
+}
+
+.chat-message[id^="Q-"] .message-content {
+  align-self: flex-end;
+  background-color: #3f495c;
+  color: white;
+  margin-left: auto;
+}
+
+/* R- for the message sent by the AI */
+.chat-message[id^="R-"] {
+  justify-content: flex-start;
+}
+
+.chat-message[id^="R-"] .message-content {
+  align-self: flex-start;
+  background-color: #2f3542;
+  color: white;
 }
 
 .chat-input {
   display: flex;
   align-items: center;
-  width: 100%;
+  justify-content: center;
   padding: 10px;
-  background-color: darkgray;
+  background-color: var(--background-secondary);
+  margin: 10px 10px 10px 10px;
+}
 
-  /* add styling for the input field and send button */
-  input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    margin-right: 10px;
-    background-color: lightgray;
-    color: black;
-  }
-  button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: blue;
-    color: white;
-    cursor: pointer;
+.chat-input input {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #3f495c;
+  color: white;
+  margin-right: 10px;
+}
 
-    &:hover {
-      background-color: darkblue;
-    }
-  }
+.chat-input input:focus {
+  outline: none;
+}
+
+.chat-input input::placeholder {
+  color: #a0a0a0;
+}
+
+.chat-input button {
+  background-color: #386ed1;
+  border-radius: 8px;
+  width: 60px;
+  height: 37px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  transition: all 0.15s ease;
+}
+
+.chat-input button:hover {
+  background-color: #2a5bb8;
+  transform: translateY(-1px);
+}
+
+.chat-input button:active {
+  transform: translateY(0);
 }

@@ -6,6 +6,9 @@ import { ChatWindow } from './components/main/ChatWindow';
 import { ChatInput } from './components/main/ChatInput';
 import { CreateNote } from './components/header/CreateNote';
 
+// import icon assests
+import logo from '../../assets/img/lemma_round.png';
+
 // Function to get the current tab Attributes
 async function getCurrentTabAttributes() {
   const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
@@ -49,7 +52,7 @@ function App() {
     setChatMessages([...chatMessages, { id: `Q-${questionCounter}`, content: message }]);
     // Increment question counter
     setQuestionCounter(questionCounter + 1);
-    
+
     // Get tab attributes
     const webContent = await getCurrentTabAttributes();
     console.log('Web Content:', webContent);
@@ -60,12 +63,12 @@ function App() {
     }
 
     //Send the message and tab ID to the background script
-    browser.runtime.sendMessage({ 
-      type: 'askQuestion', 
-      query: message, 
-      webContent: webContent.text, 
-      webAttributes: webContent, 
-      prevMessages: chatMessages 
+    browser.runtime.sendMessage({
+      type: 'askQuestion',
+      query: message,
+      webContent: webContent.text,
+      webAttributes: webContent,
+      prevMessages: chatMessages
     }).then((response) => {
       console.log('Received response from background script:', response);
       // Add the response to the chat messages
@@ -102,6 +105,7 @@ function App() {
     <div className="App">
       <div className="header">
         <div className="logo">
+
           <h1>LEMMA</h1>
         </div>
         <div className="header-right">
@@ -117,7 +121,7 @@ function App() {
         <div className="content">
           <ChatWindow messages={chatMessages} />
           <ChatInput onSend={handleOnSend} />
-        </div>  
+        </div>
       </div>
     </div>
   );
