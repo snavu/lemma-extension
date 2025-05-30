@@ -13,5 +13,9 @@ export default defineConfig({
     background: {
       service_worker: 'background.js',
     },
+    icons: {
+      "32": "icon/icon32.png",
+      "128": "icon/icon128.png",
+    }
   },
 });

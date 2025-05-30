@@ -11,7 +11,7 @@ html, body {
   align-items: center;
   width: 400px; /* This adjusts the width of the popup*/
   height: 500px; /* This adjusts the height of the popup*/
-  background-color: cyan;
+  background-color: var(--background-primary);
   color: var(--text);
 }
 
