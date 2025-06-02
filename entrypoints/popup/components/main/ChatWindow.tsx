@@ -1,10 +1,17 @@
 import './main.css'
+import { useEffect, useRef } from 'react';
 
 interface ChatWindowProps {
   messages: { id: string; content: string; }[]
 }
 
 export const ChatWindow = (props: ChatWindowProps) => {
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [props.messages]);
+
   return (
     <div className="chat-window" >
       <div className="chat-messages">
@@ -19,6 +26,7 @@ export const ChatWindow = (props: ChatWindowProps) => {
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
     </div>
   );
