@@ -12,9 +12,11 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
-    "postinstall": "wxt prepare"
+    "chromeinstall": "npx @puppeteer/browsers install chrome@136.0.7103.94",
+    "postinstall": "npm run chromeinstall && wxt prepare"
   },
   "dependencies": {
+    "glob": "^11.0.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
