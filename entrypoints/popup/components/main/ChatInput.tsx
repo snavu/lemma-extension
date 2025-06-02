@@ -25,6 +25,13 @@ export const ChatInput = (props: ChatInputProps) => {
     }
   };
 
+  const SendIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" style={{ pointerEvents: 'none' }}>
+      <path d="M12 19V5" />
+      <path d="M5 12l7-7 7 7" />
+    </svg>
+  );
+
   return (
     <div className="chat-input">
       <input 
@@ -34,7 +41,9 @@ export const ChatInput = (props: ChatInputProps) => {
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <button type="submit" onClick={handleSend}>Send</button>
+      <button type="submit" onClick={handleSend}>
+        <SendIcon />
+      </button>
     </div>
   );
 }
