@@ -49,7 +49,10 @@ function App() {
 
   const handleOnSend = async (message: string) => {
     // Add message with Q-counter
-    setChatMessages([...chatMessages, { id: `Q-${questionCounter}`, content: message }]);
+    const newUserMessage = { id: `Q-${questionCounter}`, content: message };
+    const updatedMessages = [...chatMessages, newUserMessage];
+    setChatMessages(updatedMessages);
+    
     // Increment question counter
     setQuestionCounter(questionCounter + 1);
 
@@ -68,16 +71,17 @@ function App() {
       query: message,
       webContent: webContent.text,
       webAttributes: webContent,
-      prevMessages: chatMessages
+      prevMessages: updatedMessages
     }).then((response) => {
       console.log('Received response from background script:', response);
       // Add the response to the chat messages
+      const responseMessage = { id: `R-${responseCounter}`, content: response.answer };
       setChatMessages((prevMessages) => [
         ...prevMessages,
-        { id: `R-${responseCounter}`, content: response.answer },
+        responseMessage
       ]);
       // Increment response counter
-      setResponseCounter(responseCounter + 1);
+      setResponseCounter(prev => prev + 1);
     }, (error) => {
       console.error('Error sending message to background script:', error);
     });

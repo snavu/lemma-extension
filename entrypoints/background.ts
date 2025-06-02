@@ -3,9 +3,9 @@ export default defineBackground(() => {
   console.log('Hello background!', { id: browser.runtime.id });
   // listen for messages from content script
   browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log('Received message from content script:', message);
-    console.log('webContent:', message.webContent);
-    console.log('webAttributes:', message.webAttributes);
+    // console.log('Received message from content script:', message);
+    // console.log('webContent:', message.webContent);
+    // console.log('webAttributes:', message.webAttributes);
 
     // check if the message is from the content script
     // Option 1: ask qution with context of current page -- Perameter: webContent, question
@@ -32,19 +32,40 @@ export default defineBackground(() => {
   });
 });
 
+// Helper function to limit content size for HTTP requests
+function limitContentSize(content: string, maxSizeKB: number = 50): string {
+  const maxChars = maxSizeKB * 1024;
+  if (content.length > maxChars) {
+    return content.slice(0, maxChars);
+  }
+  return content;
+}
 
 // background script to get all the text in the current web page
 // Props: currentPage: tab, query: string
 // returns content: text
 async function sendQueryToLemma(webContent: string, query: string, prevMessages: string[], url: string) {
+  let limitedWebContent = webContent;
+  // Check if webContent is provided
+  if (webContent.length > 500000) {
+    // Limit webContent size to prevent request size issues
+    limitedWebContent = limitContentSize(webContent);
+  }
+
   // send a message to the content script to get the text of the current page
-  console.log('Sending query to Lemma:', { webContent, query, prevMessages, url });
+  console.log('Sending query to Lemma:', {
+    webContentSize: limitedWebContent.length,
+    content: limitedWebContent,
+    query,
+    prevMessages,
+    url
+  });
 
   try {
     const res = await fetch('http://localhost:3001/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ webContent, query, prevMessages, url }),
+      body: JSON.stringify({ webContent: limitedWebContent, query, prevMessages, url }),
     });
 
     // Check if the response is ok
@@ -85,14 +106,26 @@ async function sendQueryToLemma(webContent: string, query: string, prevMessages:
 // returns: success: boolean
 
 async function saveNoteToLemma(webContent: string, title: string, URL: string) {
+  let limitedWebContent = webContent;
+  // Check if webContent is provided
+  if (webContent.length > 500000) {
+    // Limit webContent size to prevent request size issues
+    limitedWebContent = limitContentSize(webContent);
+  }
+
   // send a message to the content script to save the note
-  console.log('Saving note to Lemma:', { webContent, title, URL });
+  console.log('Saving note to Lemma:', {
+    webContentSize: webContent.length,
+    limitedSize: limitedWebContent.length,
+    title,
+    URL
+  });
 
   try {
     const res = await fetch('http://localhost:3001/api/save-note', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ webContent, title, url: URL }),
+      body: JSON.stringify({ webContent: limitedWebContent, title, url: URL }),
     });
 
     // Check if the response is ok
