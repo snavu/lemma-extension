@@ -17,7 +17,6 @@ export const ChatWindow =
     const [displayChatMessages, setDisplayChatMessages] = useState<{ id: string; role: 'user' | 'assistant'; content: string }[]>([]);
 
     useEffect(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       if (props.chatMessages.length && props.chatMessages[props.chatMessages.length-1].role === 'user') {
         setDisplayChatMessages([
           ...props.chatMessages, 
@@ -27,8 +26,8 @@ export const ChatWindow =
       else {
         setDisplayChatMessages(props.chatMessages);
       }
-      console.log('updated');
-      console.log(props.chatMessages);
+
+      setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 200);
     }, [props.chatMessages]);
 
     return (
