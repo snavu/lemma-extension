@@ -70,7 +70,7 @@ function App() {
     }
 
     //Send the message and tab ID to the background script
-    browser.runtime.sendMessage({
+    await browser.runtime.sendMessage({
       type: 'askQuestion',
       query: message,
       webContent: webContent.text,

@@ -7,15 +7,22 @@ interface ChatInputProps {
 
 export const ChatInput = (props: ChatInputProps) => {
   const [message, setMessage] = useState('');
-  const handleSend = () => {
-    // Only send if there's a message
-    if (message.trim()) {
-      // Logic to send the message
-      console.log('Message sent');
+  const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
+
+  const handleSend = async () => {
+    // Only send if there's a message or not sending
+    if (isAwaitingResponse || message.trim() === '') return;
+    
+    // Clear the input field after sending
+    setMessage('');
+    setIsAwaitingResponse(true);
+
+    console.log('Message sent');
+    try {
       // Call the onSend function passed as a prop
-      props.onSend(message);
-      // Clear the input field after sending
-      setMessage('');
+      await props.onSend(message);
+    } finally {
+      setIsAwaitingResponse(false);
     }
   };
 
@@ -41,9 +48,14 @@ export const ChatInput = (props: ChatInputProps) => {
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <button type="submit" onClick={handleSend}>
-        <SendIcon />
-      </button>
+      {isAwaitingResponse ? (
+        <div className="circle-loader"></div>
+        ) : (
+        <button type="submit" onClick={handleSend}>
+          <SendIcon />
+        </button>
+        )
+      }
     </div>
   );
 }
