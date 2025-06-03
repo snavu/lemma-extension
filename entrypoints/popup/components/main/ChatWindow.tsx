@@ -37,6 +37,7 @@ export const ChatWindow = () => {
     }
 
     const port = browser.runtime.connect({ name: 'chatQuery' });
+    // Send the message and tab ID to the background script
     port.postMessage({
       type: 'askQuestion',
       query: message,
@@ -81,31 +82,6 @@ export const ChatWindow = () => {
         // }
       });
     });
-
-    //Send the message and tab ID to the background script
-    // await browser.runtime.sendMessage({
-    //   type: 'askQuestion',
-    //   query: message,
-    //   webContent: webContent.text,
-    //   webAttributes: webContent,
-    //   prevMessages: updatedMessages
-    // }).then((response) => {
-    //   console.log('Received response from background script:', response);
-    //   // Add the response to the chat messages
-    //   const responseMessage: { id: string; role: 'user' | 'assistant'; content: string } = { 
-    //     id: `R-${responseCounter}`, 
-    //     role: 'assistant', 
-    //     content: response.answer 
-    //   };
-    //   setChatMessages((prevMessages) => [
-    //     ...prevMessages,
-    //     responseMessage
-    //   ]);
-    //   // Increment response counter
-    //   setResponseCounter(prev => prev + 1);
-    // }, (error) => {
-    //   console.error('Error sending message to background script:', error);
-    // });
   };
 
   return (

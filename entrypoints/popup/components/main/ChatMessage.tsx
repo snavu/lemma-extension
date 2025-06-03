@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { getCurrentTabAttributes } from '../../App';
+import Markdown from 'react-markdown';
 import './ChatMessage.css';
 
 interface ChatWindowProps {
@@ -37,7 +38,7 @@ export const ChatMessage =
               id={message.id}
             >
               <div className="message-content">
-                {message.content}
+                <Markdown>{message.content}</Markdown>
               </div>
             </div>
           )
