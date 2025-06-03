@@ -1,5 +1,5 @@
 .header {
-    background-color: var(--background-primary);
+    background-color:#1e1e1e;
     font-weight: bold;
     cursor: move;
     display: flex;

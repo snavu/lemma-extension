@@ -11,8 +11,8 @@ html, body {
   align-items: center;
   width: 400px; /* This adjusts the width of the popup*/
   height: 500px; /* This adjusts the height of the popup*/
-  background-color: var(--background-primary);
-  color: var(--text);
+  background-color: #1e1e1e;
+  color: #ffffff;
   overflow-y: hidden;
 }
 
@@ -22,7 +22,7 @@ html, body {
   align-items: center;
   width: 100%;
   padding: 5px 10px 5px 10px;
-  background-color: var(--background-primary);
+  background-color: #1e1e1e;
   font-weight: bold;
   border-radius: 15px;
   
@@ -32,7 +32,7 @@ html, body {
 
     h1 {
       font-size: 1.5rem;
-      color: var(--text);
+      color: #ffffff;
       margin: 0;
     }
   }

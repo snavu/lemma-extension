@@ -45,17 +45,15 @@ function limitContentSize(content: string, maxSizeKB: number = 50): string {
 // Props: currentPage: tab, query: string
 // returns content: text
 async function sendQueryToLemma(webContent: string, query: string, prevMessages: string[], url: string) {
-  let limitedWebContent = webContent;
-  // Check if webContent is provided
-  if (webContent.length > 500000) {
+  if (webContent.length > 5000) {
     // Limit webContent size to prevent request size issues
-    limitedWebContent = limitContentSize(webContent);
+    webContent = limitContentSize(webContent);
+    console.warn('Web content size exceeded 5000 characters, limiting to:', webContent.length);
   }
-
   // send a message to the content script to get the text of the current page
   console.log('Sending query to Lemma:', {
-    webContentSize: limitedWebContent.length,
-    content: limitedWebContent,
+    webContentSize: webContent.length,
+    content: webContent,
     query,
     prevMessages,
     url
@@ -65,7 +63,7 @@ async function sendQueryToLemma(webContent: string, query: string, prevMessages:
     const res = await fetch('http://localhost:3001/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ webContent: limitedWebContent, query, prevMessages, url }),
+      body: JSON.stringify({ webContent: webContent, query, prevMessages, url }),
     });
 
     // Check if the response is ok
