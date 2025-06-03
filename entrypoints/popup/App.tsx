@@ -2,15 +2,16 @@ import { useState } from 'react';
 import './App.css';
 
 // import components from './components';
-import { ChatWindow } from './components/main/ChatWindow';
+import { ChatWindow } from './components/main/ChatMessage';
 import { ChatInput } from './components/main/ChatInput';
 import { CreateNote } from './components/header/CreateNote';
 
 // import icon assests
 import logo from '../../assets/img/lemma_round.png';
+import { Chatbot } from './components/main/ChatWindow';
 
 // Function to get the current tab Attributes
-async function getCurrentTabAttributes() {
+export async function getCurrentTabAttributes() {
   const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
 
   if (!tab || !tab.id) {
@@ -43,57 +44,58 @@ async function getCurrentTabAttributes() {
 }
 
 function App() {
-  const [chatMessages, setChatMessages] = useState<{ id: string; role: 'user' | 'assistant'; content: string }[]>([]);
-  const [questionCounter, setQuestionCounter] = useState(1);
-  const [responseCounter, setResponseCounter] = useState(1);
+  // const chatRef = useRef<ChatMessageHandle>(null);
+  // const [chatMessages, setChatMessages] = useState<{ id: string; role: 'user' | 'assistant'; content: string }[]>([]);
+  // const [questionCounter, setQuestionCounter] = useState(1);
+  // const [responseCounter, setResponseCounter] = useState(1);
 
-  const handleOnSend = async (message: string) => {
-    // Add message with Q-counter
-    const newUserMessage: { id: string; role: 'user' | 'assistant'; content: string } = { 
-      id: `Q-${questionCounter}`, 
-      role: 'user', 
-      content: message 
-    };
-    const updatedMessages: { id: string; role: 'user' | 'assistant'; content: string }[] = [...chatMessages, newUserMessage];
-    setChatMessages(updatedMessages);
+  // const handleOnSend = async (message: string) => {
+  //   // Add message with Q-counter
+  //   const newUserMessage: { id: string; role: 'user' | 'assistant'; content: string } = { 
+  //     id: `Q-${questionCounter}`, 
+  //     role: 'user', 
+  //     content: message 
+  //   };
+  //   const updatedMessages: { id: string; role: 'user' | 'assistant'; content: string }[] = [...chatMessages, newUserMessage];
+  //   setChatMessages(updatedMessages);
     
-    // Increment question counter
-    setQuestionCounter(questionCounter + 1);
+  //   // Increment question counter
+  //   setQuestionCounter(questionCounter + 1);
 
-    // Get tab attributes
-    const webContent = await getCurrentTabAttributes();
-    console.log('Web Content:', webContent);
+  //   // Get tab attributes
+  //   const webContent = await getCurrentTabAttributes();
+  //   console.log('Web Content:', webContent);
 
-    if (!webContent) {
-      console.error('Failed to get web content');
-      return;
-    }
+  //   if (!webContent) {
+  //     console.error('Failed to get web content');
+  //     return;
+  //   }
 
-    //Send the message and tab ID to the background script
-    await browser.runtime.sendMessage({
-      type: 'askQuestion',
-      query: message,
-      webContent: webContent.text,
-      webAttributes: webContent,
-      prevMessages: updatedMessages
-    }).then((response) => {
-      console.log('Received response from background script:', response);
-      // Add the response to the chat messages
-      const responseMessage: { id: string; role: 'user' | 'assistant'; content: string } = { 
-        id: `R-${responseCounter}`, 
-        role: 'assistant', 
-        content: response.answer 
-      };
-      setChatMessages((prevMessages) => [
-        ...prevMessages,
-        responseMessage
-      ]);
-      // Increment response counter
-      setResponseCounter(prev => prev + 1);
-    }, (error) => {
-      console.error('Error sending message to background script:', error);
-    });
-  };
+  //   //Send the message and tab ID to the background script
+  //   await browser.runtime.sendMessage({
+  //     type: 'askQuestion',
+  //     query: message,
+  //     webContent: webContent.text,
+  //     webAttributes: webContent,
+  //     prevMessages: updatedMessages
+  //   }).then((response) => {
+  //     console.log('Received response from background script:', response);
+  //     // Add the response to the chat messages
+  //     const responseMessage: { id: string; role: 'user' | 'assistant'; content: string } = { 
+  //       id: `R-${responseCounter}`, 
+  //       role: 'assistant', 
+  //       content: response.answer 
+  //     };
+  //     setChatMessages((prevMessages) => [
+  //       ...prevMessages,
+  //       responseMessage
+  //     ]);
+  //     // Increment response counter
+  //     setResponseCounter(prev => prev + 1);
+  //   }, (error) => {
+  //     console.error('Error sending message to background script:', error);
+  //   });
+  // };
 
   const handleSaveNote = async (title: string) => {
     console.log('Save Note button clicked');
@@ -131,8 +133,7 @@ function App() {
           <div className="sidebar-item">Item 3</div>
         </div>*/}
         <div className="content">
-          <ChatWindow messages={chatMessages} />
-          <ChatInput onSend={handleOnSend} />
+          <Chatbot />
         </div>
       </div>
     </div>
