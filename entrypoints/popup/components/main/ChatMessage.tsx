@@ -6,34 +6,29 @@ interface ChatWindowProps {
   chatMessages: { id: string; role: 'user' | 'assistant'; content: string }[];
 }
 
-// export type ChatMessageHandle = {
-//   handleOnSend: (message: string) => void;
-//   chatMessages: { id: string; role: 'user' | 'assistant'; content: string }[];
-// }
-
-export const ChatWindow =
+export const ChatMessage =
   (props: ChatWindowProps) => {
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const [displayChatMessages, setDisplayChatMessages] = useState<{ id: string; role: 'user' | 'assistant'; content: string }[]>([]);
 
     useEffect(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-      if (props.chatMessages.length && props.chatMessages[props.chatMessages.length-1].role === 'user') {
-        setDisplayChatMessages([
-          ...props.chatMessages, 
-          { id: `R-${props.chatMessages.length}`, role: 'assistant', content: 'Thinking...' }
-        ]);
-      }
-      else {
-        setDisplayChatMessages(props.chatMessages);
-      }
+      setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 200);
+      // if (props.chatMessages.length && props.chatMessages[props.chatMessages.length-1].role === 'user') {
+      //   setDisplayChatMessages([
+      //     ...props.chatMessages, 
+      //     { id: `R-${props.chatMessages.length}`, role: 'assistant', content: 'Thinking...' }
+      //   ]);
+      // }
+      // else {
+      //   setDisplayChatMessages(props.chatMessages);
+      // }
       console.log('updated');
       console.log(props.chatMessages);
     }, [props.chatMessages]);
 
     return (
       <div className="chat-messages">
-        {displayChatMessages.map((message) => (
+        {props.chatMessages.map((message) => (
           message.content === 'Thinking...' ? (
             <div
               key={message.id}
