@@ -43,14 +43,18 @@ async function getCurrentTabAttributes() {
 }
 
 function App() {
-  const [chatMessages, setChatMessages] = useState<{ id: string; content: string }[]>([]);
+  const [chatMessages, setChatMessages] = useState<{ id: string; role: 'user' | 'assistant'; content: string }[]>([]);
   const [questionCounter, setQuestionCounter] = useState(1);
   const [responseCounter, setResponseCounter] = useState(1);
 
   const handleOnSend = async (message: string) => {
     // Add message with Q-counter
-    const newUserMessage = { id: `Q-${questionCounter}`, content: message };
-    const updatedMessages = [...chatMessages, newUserMessage];
+    const newUserMessage: { id: string; role: 'user' | 'assistant'; content: string } = { 
+      id: `Q-${questionCounter}`, 
+      role: 'user', 
+      content: message 
+    };
+    const updatedMessages: { id: string; role: 'user' | 'assistant'; content: string }[] = [...chatMessages, newUserMessage];
     setChatMessages(updatedMessages);
     
     // Increment question counter
@@ -75,7 +79,11 @@ function App() {
     }).then((response) => {
       console.log('Received response from background script:', response);
       // Add the response to the chat messages
-      const responseMessage = { id: `R-${responseCounter}`, content: response.answer };
+      const responseMessage: { id: string; role: 'user' | 'assistant'; content: string } = { 
+        id: `R-${responseCounter}`, 
+        role: 'assistant', 
+        content: response.answer 
+      };
       setChatMessages((prevMessages) => [
         ...prevMessages,
         responseMessage
