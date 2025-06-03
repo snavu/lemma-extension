@@ -13,15 +13,6 @@ export const ChatMessage =
 
     useEffect(() => {
       setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 200);
-      // if (props.chatMessages.length && props.chatMessages[props.chatMessages.length-1].role === 'user') {
-      //   setDisplayChatMessages([
-      //     ...props.chatMessages, 
-      //     { id: `R-${props.chatMessages.length}`, role: 'assistant', content: 'Thinking...' }
-      //   ]);
-      // }
-      // else {
-      //   setDisplayChatMessages(props.chatMessages);
-      // }
       console.log('updated');
       console.log(props.chatMessages);
     }, [props.chatMessages]);
