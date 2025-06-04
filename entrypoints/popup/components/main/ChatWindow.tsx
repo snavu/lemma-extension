@@ -10,7 +10,6 @@ export const ChatWindow = () => {
   const [responseCounter, setResponseCounter] = useState(1);
 
   const handleOnSend = async (message: string) => {
-    console.log('handleOnSend sent');
     // Add message with Q-counter
     const newUserMessage: { id: string; role: 'user' | 'assistant'; content: string } = { 
       id: `Q-${questionCounter}`, 
@@ -36,6 +35,7 @@ export const ChatWindow = () => {
       return;
     }
 
+    // Establish connection with background
     const port = browser.runtime.connect({ name: 'chatQuery' });
     // Send the message and tab ID to the background script
     port.postMessage({
@@ -48,9 +48,10 @@ export const ChatWindow = () => {
 
     let assistantMessage = '';
 
+    // Wait until stream completes
     await new Promise<void>((resolve, reject) => {
       const onMessage = (msg: any) => {
-        if (msg.done) {
+        if (msg.done || msg.error) {
           setResponseCounter(prev => prev + 1);
           port.disconnect();
           port.onMessage.removeListener(onMessage);
@@ -65,7 +66,6 @@ export const ChatWindow = () => {
           };
 
           setChatMessages((prev) => {
-            console.log(responseMessage.content);
             const updated = [...prev];
             updated[updated.length - 1] = responseMessage;
             return updated;
@@ -77,9 +77,6 @@ export const ChatWindow = () => {
 
       port.onDisconnect.addListener(() => {
         port.onMessage.removeListener(onMessage);
-        // if (!assistantMessage) {
-        //   reject(new Error('Port disconnected unexpectedly before streaming finished.'));
-        // }
       });
     });
   };

@@ -10,12 +10,10 @@ interface ChatWindowProps {
 export const ChatMessage =
   (props: ChatWindowProps) => {
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
-    const [displayChatMessages, setDisplayChatMessages] = useState<{ id: string; role: 'user' | 'assistant'; content: string }[]>([]);
 
     useEffect(() => {
-      setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 200);
-      console.log('updated');
-      console.log(props.chatMessages);
+      // Auto-scroll to the bottom with message
+      setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
     }, [props.chatMessages]);
 
     return (
