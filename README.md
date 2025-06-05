@@ -27,7 +27,7 @@ Built with privacy-first principles, the LEMMA Chrome Extension allows you to co
 - Chrome or Chromium-based browser
 - Node.js (for development)
 - npm or yarn
-- [LEMMA Desktop App](https://github.com/snavu/lemma) (optional, for full integration)
+- [LEMMA Desktop App](https://github.com/snavu/lemma)
 
 ### Installation
 
@@ -71,10 +71,9 @@ npm run dev
 
 - **Framework**: WXT (Web Extension Tools)
 - **Frontend**: React.js with TypeScript
-- **Build System**: Vite
+- **Build System**: Node.js
 - **Styling**: Tailwind CSS
-- **Storage**: Chrome Extension Storage API
-- **Communication**: Chrome Extension Messaging API
+- **Communication**: Post request to LEMMA Express Server
 
 ## Contributing
 
