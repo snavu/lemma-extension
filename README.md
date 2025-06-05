@@ -27,7 +27,9 @@ Built with privacy-first principles, the LEMMA Chrome Extension allows you to co
 - Chrome or Chromium-based browser
 - Node.js (for development)
 - npm or yarn
-- [LEMMA Desktop App](https://github.com/snavu/lemma)
+- [LEMMA Desktop App](https://github.com/snavu/lemma) **must be installed and running**
+
+> **⚠️ Important**: The LEMMA Desktop App must be running on your machine for the extension to function properly. The extension communicates with the local LEMMA server to sync your web content with your knowledge base.
 
 ### Installation
 
