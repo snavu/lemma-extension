@@ -1,5 +1,5 @@
 <p align="center">
-<img style="align:center;" src="https://github.com/user-attachments/assets/placeholder-logo" alt="LEMMA Extension Logo" width="200" />
+<img style="align:center;" src="https://github.com/user-attachments/assets/bdecf1bc-de64-4642-bb8d-459aad2797ed" alt="LEMMA Extension Logo" width="200" />
 </p>
 
 <h1 align="center">LEMMA Chrome Extension</h1>
